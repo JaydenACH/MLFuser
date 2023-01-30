@@ -1,17 +1,19 @@
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
 import json
 import pandas as pd
 import pyautogui
 import threading
 from time import sleep
+import sys
+
 
 #Creating window and it's settings
-root = Tk()
+root = tk.Tk()
 root.title('MLfuser')
-root.iconbitmap('')
+#root.iconbitmap('')  --Jayden: Not required if not going to customize the icon of the window
 root.resizable(width=False, height=False)
-windowPosition = str
+# windowPosition = str
 
 #Restores last known position if possible
 try:
@@ -130,29 +132,31 @@ imageError = {
 }
 
 #Creating varibles
-target = StringVar(value='Select Target Mob')
-mobNum = IntVar(value=0)
+target = tk.StringVar(value='Select Target Mob')
+mobNum = tk.IntVar(value=0)
 mob1 = 'Source mob 1'
 mob2 = 'Source mob 2'
-farm = StringVar()
-keep0 = BooleanVar()
-keep1 = BooleanVar()
-keep2 = BooleanVar()
-keep3 = BooleanVar()
-keep4 = BooleanVar()
-keep5 = BooleanVar()
-keep6 = BooleanVar()
-keep7 = BooleanVar()
-keep8 = BooleanVar()
-keep9 = BooleanVar()
-keep10 = BooleanVar()
-keep11 = BooleanVar()
-keep12 = BooleanVar()
-keep13 = BooleanVar()
-keep14 = BooleanVar()
-keep15 = BooleanVar()
-keep16 = BooleanVar()
-keep17 = BooleanVar()
+farm = tk.StringVar()
+keep0 = tk.BooleanVar()
+keep1 = tk.BooleanVar()
+keep2 = tk.BooleanVar()
+keep3 = tk.BooleanVar()
+keep4 = tk.BooleanVar()
+keep5 = tk.BooleanVar()
+keep5 = tk.BooleanVar()
+keep5 = tk.BooleanVar()
+keep6 = tk.BooleanVar()
+keep7 = tk.BooleanVar()
+keep8 = tk.BooleanVar()
+keep9 = tk.BooleanVar()
+keep10 = tk.BooleanVar()
+keep11 = tk.BooleanVar()
+keep12 = tk.BooleanVar()
+keep13 = tk.BooleanVar()
+keep14 = tk.BooleanVar()
+keep15 = tk.BooleanVar()
+keep16 = tk.BooleanVar()
+keep17 = tk.BooleanVar()
 
 #Saving window's last position for next use
 def onClose():
@@ -185,7 +189,7 @@ def targetDropChanged(event):
     farm.set('Please Press Update Farms')
     farmList = []
     farmDrop.config(textvariable=farm, values=farmList)
-    startButton.config(state=DISABLED)
+    startButton.config(state=tk.DISABLED)
     statusLabel.config(text='Stat bouns and source mobs updated')
 
 #Calls for the farms for the target mob from google docs
@@ -211,7 +215,7 @@ def updateFarm():
             farmList.extend([i])
         farm.set(farmList[0])
         farmDrop.config(textvariable=farm, values=farmList)
-        startButton.config(state=NORMAL)
+        startButton.config(state=tk.NORMAL)
         statusLabel.config(text='Farms updated')
     except ConnectionError:
         statusLabel.config(text='Cannot connect to the google docs')
@@ -224,7 +228,7 @@ def imageScan(imageStr, dir):
     scanEvent = threading.Event()
     try:
         image = pyautogui.locateCenterOnScreen('Images/' + dir + imageStr + '.png')
-        print('1')
+        print(image)
         if not image:
             statusLabel.config(text=imageError[imageStr])
             print('2')
@@ -242,6 +246,18 @@ def imageScan(imageStr, dir):
     scanEvent.wait()
     print('5')
     return image
+    # image = 0
+    # try:
+    #     while not image:
+    #         image = pyautogui.locateCenterOnScreen('Images/' + dir + imageStr + '.png')
+    #         print(f"in while loop: {image}") if image is None else print("\n")
+    # except KeyboardInterrupt:
+    #     print("Done")
+    # except FileNotFoundError:
+    #     statusLabel.config(text='Search image ' + imageStr + ' cannot be found')
+    # print(f"outside while loop: {image}")
+    # return image
+
 
 #Searching the farms
 def farmSearch(i):
@@ -262,11 +278,11 @@ def startFuse():
     global stop
     stop = False
     statusLabel.config(text='Starting')
-    targetDrop.config(state=DISABLED)
-    farmDrop.config(state=DISABLED)
-    updateButton.config(state=DISABLED)
+    targetDrop.config(state=tk.DISABLED)
+    farmDrop.config(state=tk.DISABLED)
+    updateButton.config(state=tk.DISABLED)
     startButton.config(text='Pause', command=pauseFuse)
-    stopButton.config(state=NORMAL)
+    stopButton.config(state=tk.NORMAL)
     farmIndex = farmList.index(farm.get())
     sleep(0.5)
     prestartCheck()
@@ -277,65 +293,65 @@ def startFuse():
 #Pauses the fusing process
 def pauseFuse():
     startButton.config(text='Resume', command=resumeFuse)
-    stopButton.config(state=NORMAL)
+    stopButton.config(state=tk.NORMAL)
     return
 
 #Resumes after pausing the fusing process
 def resumeFuse():
     startButton.config(text='Pause', command=pauseFuse)
-    stopButton.config(state=NORMAL)
+    stopButton.config(state=tk.NORMAL)
     return
 
 #Stops and resets the fusing process
 def stopFuse():
-    targetDrop.config(state=NORMAL)
-    farmDrop.config(state=NORMAL)
-    updateButton.config(state=NORMAL)
+    targetDrop.config(state=tk.NORMAL)
+    farmDrop.config(state=tk.NORMAL)
+    updateButton.config(state=tk.NORMAL)
     startButton.config(text='Start', command=startFuse)
-    stopButton.config(state=DISABLED)
+    stopButton.config(state=tk.DISABLED)
     return
 
 #Creating widgets
-label1 = Label(root, text='Target Mob :')
-label2 = Label(root, text='Stat Bonus :')
-label3 = Label(root, text='Source Mob :')
-label4 = Label(root, text='Starting Farm :')
-label5 = Label(root, text='Last Farm Used :')
-label6 = Label(root, text='Program Status :')
-keepFrame = LabelFrame(root, text='Mobs to keep :')
+label1 = tk.Label(root, text='Target Mob :')
+label2 = tk.Label(root, text='Stat Bonus :')
+label3 = tk.Label(root, text='Source Mob :')
+label4 = tk.Label(root, text='Starting Farm :')
+label5 = tk.Label(root, text='Last Farm Used :')
+label6 = tk.Label(root, text='Program Status :')
+keepFrame = tk.LabelFrame(root, text='Mobs to keep :')
 targetDrop = ttk.Combobox(root, textvariable=target, state='readonly', values=list(monsterDict.keys()))
 targetDrop.bind('<<ComboboxSelected>>', targetDropChanged)
 targetDrop.config(width=47)
-statLabel = Label(root, text='')
-radio1 = Radiobutton(root, text=mob1, variable=mobNum, value=0)
-radio2 = Radiobutton(root, text=mob2, variable=mobNum, value=1)
+statLabel = tk.Label(root, text='')
+radio1 = tk.Radiobutton(root, text=mob1, variable=mobNum, value=0)
+radio2 = tk.Radiobutton(root, text=mob2, variable=mobNum, value=1)
 radio2.deselect
 farmDrop = ttk.Combobox(root, textvariable=farm, state='readonly', values=farmList)
 farmDrop.config(width=47)
-farmLabel = Label(root, text='')
-updateButton = Button(root, text='Update Farm', command=updateFarm, width=15)
-statusLabel = Label(root, text='')
-keepFrame = LabelFrame(root, text='Mob to keep :')
-check0 = Checkbutton(keepFrame, text='Elite Bloodfang', variable=keep0)
-check1 = Checkbutton(keepFrame, text='Eye of Time', variable=keep1)
-check2 = Checkbutton(keepFrame, text='Griffey', variable=keep2)
-check3 = Checkbutton(keepFrame, text='Ifrit', variable=keep3)
-check4 = Checkbutton(keepFrame, text='King Slime', variable=keep4)
-check5 = Checkbutton(keepFrame, text='Leviathan', variable=keep5)
-check6 = Checkbutton(keepFrame, text='Lupin Pig', variable=keep6)
-check7 = Checkbutton(keepFrame, text='Manon', variable=keep7)
-check8 = Checkbutton(keepFrame, text='Master Omen', variable=keep8)
-check9 = Checkbutton(keepFrame, text='Nether Monk', variable=keep9)
-check10 = Checkbutton(keepFrame, text='Nine-Tailed Fox', variable=keep10)
-check11 = Checkbutton(keepFrame, text='Riche', variable=keep11)
-check12 = Checkbutton(keepFrame, text='Snow Giant', variable=keep12)
-check13 = Checkbutton(keepFrame, text='Sober Viking', variable=keep13)
-check14 = Checkbutton(keepFrame, text='Targa', variable=keep14)
-check15 = Checkbutton(keepFrame, text='Thief Crow', variable=keep15)
-check16 = Checkbutton(keepFrame, text='Toy Black Knight', variable=keep16)
-check17 = Checkbutton(keepFrame, text='Victor', variable=keep17)
-startButton = Button(root, text='Start', state=DISABLED, command=startFuse, width=22)
-stopButton = Button(root, text='Stop', state=DISABLED, command=stopFuse, width=22)
+farmLabel = tk.Label(root, text='')
+updateButton = tk.Button(root, text='Update Farm', command=updateFarm, width=15)
+statusLabel = tk.Label(root, text='')
+keepFrame = tk.LabelFrame(root, text='Mob to keep :')
+check0 = tk.Checkbutton(keepFrame, text='Elite Bloodfang', variable=keep0)
+check1 = tk.Checkbutton(keepFrame, text='Eye of Time', variable=keep1)
+check2 = tk.Checkbutton(keepFrame, text='Griffey', variable=keep2)
+check3 = tk.Checkbutton(keepFrame, text='Ifrit', variable=keep3)
+check4 = tk.Checkbutton(keepFrame, text='King Slime', variable=keep4)
+check5 = tk.Checkbutton(keepFrame, text='Leviathan', variable=keep5)
+check6 = tk.Checkbutton(keepFrame, text='Lupin Pig', variable=keep6)
+check7 = tk.Checkbutton(keepFrame, text='Manon', variable=keep7)
+check8 = tk.Checkbutton(keepFrame, text='Master Omen', variable=keep8)
+check9 = tk.Checkbutton(keepFrame, text='Nether Monk', variable=keep9)
+check10 = tk.Checkbutton(keepFrame, text='Nine-Tailed Fox', variable=keep10)
+check11 = tk.Checkbutton(keepFrame, text='Riche', variable=keep11)
+check12 = tk.Checkbutton(keepFrame, text='Snow Giant', variable=keep12)
+check13 = tk.Checkbutton(keepFrame, text='Sober Viking', variable=keep13)
+check14 = tk.Checkbutton(keepFrame, text='Targa', variable=keep14)
+check15 = tk.Checkbutton(keepFrame, text='Thief Crow', variable=keep15)
+check16 = tk.Checkbutton(keepFrame, text='Toy Black Knight', variable=keep16)
+check17 = tk.Checkbutton(keepFrame, text='Victor', variable=keep17)
+startButton = tk.Button(root, text='Start', state=tk.DISABLED, command=startFuse, width=22)
+stopButton = tk.Button(root, text='Stop', state=tk.DISABLED, command=stopFuse, width=22)
 
 
 #Packing widgets onto window
@@ -376,6 +392,6 @@ startButton.grid(row=7, column=0, columnspan=2, sticky='w', padx=20, pady=5)
 stopButton.grid(row=7, column=1, columnspan=2, sticky='e', padx=0, pady=5)
 
 
-
 root.protocol("WM_DELETE_WINDOW", onClose)
-root.mainloop()  
+root.mainloop()
+
